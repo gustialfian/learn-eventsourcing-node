@@ -1,0 +1,17 @@
+{
+  "name": "learn-eventsourcing-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tap": "^18.7.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
