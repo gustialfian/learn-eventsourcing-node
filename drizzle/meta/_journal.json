@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1708857854770,
+      "tag": "0000_plain_turbo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1708858888409,
+      "tag": "0001_flat_blue_shield",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708858902779,
+      "tag": "0002_demonic_guardsmen",
+      "breakpoints": true
+    }
+  ]
+}
