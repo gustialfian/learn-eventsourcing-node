@@ -45,18 +45,18 @@ export type CharacterHealAction = Event<
     }
 >;
 
-export type Character = Readonly<{
+export type Character = {
     id: string;
     name: string;
     stats: CharacterStats;
-}>
+}
 
-export type CharacterStats = Readonly<{
+export type CharacterStats = {
     hp: number;
     maxHp: number;
     str: number;
     dex: number;
-}>
+}
 
 export function apply({ type, data: event }: Events, state: Character): Character {
     switch (type) {
@@ -71,24 +71,18 @@ export function apply({ type, data: event }: Events, state: Character): Characte
                     dex: 10,
                 }
             }
-        case 'CharacterHurtAction': 
-            return {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    hp: Math.max(state.stats.hp - event.point, 0),
-                }
-            }
-        case 'CharacterHitAction': 
+            
+        case 'CharacterHurtAction':
+            state.stats.hp = Math.max(state.stats.hp - event.point, 0)
             return state
-        case 'CharacterHealAction': 
-            return {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    hp: Math.min(state.stats.hp + event.point, state.stats.maxHp),
-                }
-            }
+
+        case 'CharacterHitAction':
+            return state
+
+        case 'CharacterHealAction':
+            state.stats.hp = Math.min(state.stats.hp + event.point, state.stats.maxHp)
+            return state
+
         default: {
             const _: never = type;
             throw new Error('Unknown Event Type');

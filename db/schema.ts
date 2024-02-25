@@ -11,3 +11,6 @@ export const eventStore = sqliteTable('event_store', {
 }, (table) => ({
     aggregateRootIdIdx: index('aggregate_root_id_idx').on(table.aggregateRootId),
 }));
+
+export type EventStoreInsert = typeof eventStore.$inferInsert
+export type EventStoreSelect = typeof eventStore.$inferSelect
