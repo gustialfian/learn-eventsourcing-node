@@ -1,10 +1,10 @@
-import { Events } from "../character/character";
+import { CharacterEvents } from "../character/character";
 import { ulid } from 'ulidx'
 import { db } from "./db";
 import { eventStore } from "./schema";
 
 const characterId = ulid();
-const events: Events[] = [
+const events: CharacterEvents[] = [
     {
         type: 'CharacterCreated',
         data: {

@@ -6,7 +6,7 @@ export type Event<
     data: Readonly<EventData>;
 }>;
 
-export type Events =
+export type CharacterEvents =
     | CharacterCreated
     | CharacterHurtAction
     | CharacterHitAction
@@ -58,34 +58,51 @@ export type CharacterStats = {
     dex: number;
 }
 
-export function apply({ type, data: event }: Events, state: Character): Character {
+export function applyCharacter(event: CharacterEvents, state: Character): Character {
+    const { type } = event
     switch (type) {
         case 'CharacterCreated':
-            return {
-                id: event.characterId,
-                name: event.name,
-                stats: {
-                    hp: 10,
-                    maxHp: 10,
-                    str: 10,
-                    dex: 10,
-                }
-            }
-            
+            return handleCharacterCreated(event)
+
         case 'CharacterHurtAction':
-            state.stats.hp = Math.max(state.stats.hp - event.point, 0)
-            return state
+            return handleCharacterHurtAction(state, event);
 
         case 'CharacterHitAction':
-            return state
+            return handleCharacterHitAction(state, event)
 
         case 'CharacterHealAction':
-            state.stats.hp = Math.min(state.stats.hp + event.point, state.stats.maxHp)
-            return state
+            return handleCharacterHealAction(state, event);
 
         default: {
             const _: never = type;
             throw new Error('Unknown Event Type');
         }
     }
+}
+
+function handleCharacterCreated(event: CharacterCreated): Character {
+    return {
+        id: event.data.characterId,
+        name: event.data.name,
+        stats: {
+            hp: 10,
+            maxHp: 10,
+            str: 10,
+            dex: 10,
+        }
+    };
+}
+
+function handleCharacterHurtAction(state: Character, event: CharacterHurtAction): Character {
+    state.stats.hp = Math.max(state.stats.hp - event.data.point, 0);
+    return state;
+}
+
+function handleCharacterHitAction(state: Character, event: CharacterHitAction): Character {
+    return state
+}
+
+function handleCharacterHealAction(state: Character, event: CharacterHealAction) {
+    state.stats.hp = Math.min(state.stats.hp + event.data.point, state.stats.maxHp);
+    return state;
 }

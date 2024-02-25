@@ -1,8 +1,8 @@
 import { DB, EventStoreInsert, eventStore } from "../db";
-import type { Events } from './character';
+import type { CharacterEvents } from './character';
 
 
-export async function insertEventStore(db: DB, data: Events[]): Promise<void> {
+export async function insertEventStore(db: DB, data: CharacterEvents[]): Promise<void> {
     const values = data.map((x): EventStoreInsert => ({
         aggregateRootId: x.data.characterId,
         data: x,

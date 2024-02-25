@@ -1,27 +1,25 @@
-import Database from 'better-sqlite3';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
-import { unlink } from "fs/promises";
 import t from 'tap';
-import { DB, eventStore, sqlite } from '../db';
-import { Events } from './character';
+import { DB, eventStore } from '../db';
+import { setupTestDB } from '../db/test-util';
+import { CharacterEvents } from './character';
 import { insertEventStore } from "./repository";
 
 
-const dbPath = 'test-sqlite.db';
+
 t.before(async () => {
-    const db = await setupTestDB(dbPath);
+    const dbPath = `test-sqlite-${t.childId}.db`;
+    const [db, dbTearDown] = await setupTestDB(dbPath);
 
     t.context.db = db;
+    t.context.dbTearDown = dbTearDown;
 })
 t.after(async () => {
-    sqlite.close()
-    await unlink(dbPath)
+    await t.context.dbTearDown()
 })
 
 t.test('character repository', async t => {
     const db: DB = t.context.db
-    const data: Events = {
+    const data: CharacterEvents = {
         type: 'CharacterCreated',
         data: {
             characterId: 'test-id',
@@ -43,9 +41,3 @@ t.test('character repository', async t => {
     })
 })
 
-async function setupTestDB(dbPath: string) {
-    const sqlite = new Database(dbPath);
-    const db = drizzle(sqlite);
-    migrate(db, { migrationsFolder: './drizzle' });
-    return db;
-}
